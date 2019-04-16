@@ -1060,6 +1060,12 @@ printvars:
 
 .PHONY: clean
 clean:
+	# Some build systems (looking at you golang) create read only directories
+	# As such rm -rf will actually fail, so brute force them all to writeable
+	# before removing them.
+	chmod -R u+w $(BASE_TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) $(HOST_DIR_SYMLINK) \
+		$(BUILD_DIR) $(BASE_DIR)/staging \
+		$(LEGAL_INFO_DIR) $(GRAPHS_DIR)
 	rm -rf $(BASE_TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) $(HOST_DIR_SYMLINK) \
 		$(BUILD_DIR) $(BASE_DIR)/staging \
 		$(LEGAL_INFO_DIR) $(GRAPHS_DIR)
