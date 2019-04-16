@@ -346,6 +346,10 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 
 # Remove package sources
 $(BUILD_DIR)/%/.stamp_dircleaned:
+	# Some build systems (looking at you golang) create read only directories
+	# As such rm -rf will actually fail, so brute force them all to writeable
+	# before removing them.
+	chmod -R u+w $(@D)
 	rm -Rf $(@D)
 
 ################################################################################
